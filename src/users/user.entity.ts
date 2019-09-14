@@ -6,12 +6,18 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 25 })
-    fullName:string;
-
-    @Column('date')
-    birthday:string;
+    @Column({ length: 250 })
+    Name: string;
 
     @Column()
-    isActive:boolean;
+    Phone: string;
+
+    @Column({ length: 500 })
+    Portal: string;
+
+    @Column()
+    Dias: string;
+
+    @Column({ length: 250 })
+    Observations: string;
 }
