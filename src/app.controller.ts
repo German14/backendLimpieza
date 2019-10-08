@@ -1,9 +1,10 @@
-import {Controller, Get, Request, Post, UseGuards, UseInterceptors, UploadedFile, HttpCode} from '@nestjs/common';
-import { AppService } from './app.service';
+import {Controller, HttpCode, Post, Request, UploadedFile, UseGuards, UseInterceptors, Get} from '@nestjs/common';
+import {AppService} from './app.service';
 import {AuthGuard} from "@nestjs/passport";
 import {AuthService} from "./auth/auth.service";
 import {FileInterceptor} from '@nestjs/platform-express';
-
+import {diskStorage} from 'multer'
+import { Logger } from '@nestjs/common';
 @Controller('api')
 export class AppController {
 
@@ -18,9 +19,24 @@ export class AppController {
   @Post('upload')
   @HttpCode(200)
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file) {
-    console.log(file);
-    return file;
+  @Post()
+  @UseInterceptors(
+      FileInterceptor('file', {
+        storage: diskStorage({
+          destination: './files',
+          filename: (req, file, cb) => {
+
+            cb(null, 'hola')
+          }
+        })
+      })
+  )
+  async uploadedFile(@UploadedFile() file) {
+    Logger.log(file)
+    const response = {
+      filename: file.filename
+    };
+    return response;
   }
 
 
