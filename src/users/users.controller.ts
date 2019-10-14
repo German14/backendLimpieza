@@ -1,7 +1,7 @@
-import {Controller, Get, Param, Post, Body, Put, Delete, Options, HttpCode, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Options, Param, Post, Put, Request, UseGuards} from '@nestjs/common';
 import {UsersService} from './users.service';
 import {User} from './user.entity';
-import {AuthGuard} from "@nestjs/passport";
+import {AuthGuard} from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -20,8 +20,13 @@ export class UsersController {
     @Post()
     @UseGuards(AuthGuard('jwt'))
     @HttpCode(200)
-    create(@Body() user: User) {
-        return this.service.createUser(user);
+    create(@Body() user: User, @Request() req ) {
+        this.service.createUser(user);
+        const response = {
+            value: user,
+            result: 'Agregado',
+        };
+        return  response;
     }
     @Options()
     @UseGuards(AuthGuard('jwt'))
@@ -33,12 +38,23 @@ export class UsersController {
     @Put(':id')
     @UseGuards(AuthGuard('jwt'))
     update(@Body() user: User) {
-        return this.service.updateUser(user);
+        this.service.updateUser(user);
+        const response = {
+            value: user,
+            result: 'Actualizado',
+        };
+        return  response;
     }
 
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'))
     deleteUser(@Param() params) {
-        return this.service.deleteUser(params.id);
+        this.service.deleteUser(params.id);
+        const response = {
+            value: params,
+            result: 'Eliminado',
+
+        };
+        return  response;
     }
 }

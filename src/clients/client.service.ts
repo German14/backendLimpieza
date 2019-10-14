@@ -12,11 +12,10 @@ export class ClientService {
         return await this.clientsRepository.find();
     }
 
-    // tslint:disable-next-line:variable-name
-    async getClient(_id: number): Promise<Client[]> {
+    async getClient(ids: number): Promise<Client[]> {
         return await this.clientsRepository.find({
-            select: ['Name', 'Phone', 'Tiro','Garaje','Portal','Observations'],
-            where: [{ id: _id }],
+            select: ['Name', 'Phone', 'Tiro', 'Garaje', 'Portal', 'Observations'],
+            where: [{id: ids }],
         });
     }
 

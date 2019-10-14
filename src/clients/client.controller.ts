@@ -4,7 +4,7 @@ import {Client} from './client.entity';
 import {AuthGuard} from '@nestjs/passport';
 
 @Controller('clients')
-export class ClientController{
+export class ClientController {
     constructor(private service: ClientService) { }
 
     @Get(':id')
@@ -21,7 +21,12 @@ export class ClientController{
     @HttpCode(200)
     @UseGuards(AuthGuard('jwt'))
     create(@Body() client: Client) {
-        return this.service.createClient(client);
+        this.service.createClient(client);
+        const response = {
+            value: Client,
+            result: 'Agregado',
+        };
+        return  response;
     }
     @Options()
     @HttpCode(204)
@@ -33,12 +38,22 @@ export class ClientController{
     @Put(':id')
     @UseGuards(AuthGuard('jwt'))
     update(@Body() client: Client) {
-        return this.service.updateClient(client);
+        this.service.updateClient(client);
+        const response = {
+            value: client,
+            result: 'Actualizado',
+        };
+        return  response;
     }
 
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'))
     deleteUser(@Param() params) {
-        return this.service.deleteClient(params.id);
+        this.service.deleteClient(params.id);
+        const response = {
+            value: params,
+            result: 'Eliminado',
+        };
+        return  response;
     }
 }
