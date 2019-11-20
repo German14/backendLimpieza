@@ -12,11 +12,13 @@ export class UsersController {
     get(@Param() params) {
         return this.service.getUser(params.id);
     }
+
     @Get()
     @UseGuards(AuthGuard('jwt'))
     all() {
         return this.service.getUsers();
     }
+
     @Post()
     @UseGuards(AuthGuard('jwt'))
     @HttpCode(200)
@@ -28,6 +30,7 @@ export class UsersController {
         };
         return  response;
     }
+
     @Options()
     @UseGuards(AuthGuard('jwt'))
     @HttpCode(204)

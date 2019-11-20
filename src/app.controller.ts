@@ -5,6 +5,7 @@ import {AuthService} from './auth/auth.service';
 import {FileInterceptor} from '@nestjs/platform-express';
 import {diskStorage} from 'multer';
 import {Subject} from 'rxjs/internal/Subject';
+import {RegisterEntity} from "./users/register.entity";
 
 @Controller('api')
 export class AppController {
@@ -13,33 +14,19 @@ response = {};
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Request() req){
-        return this.authService.login(req.user);
+        return this.authService.login(req.body);
     }
-   //
-   //
-   //  @Post('upload')
-   //  @HttpCode(200)
-   //  @Post()
-   //  @UseInterceptors(
-   //      FileInterceptor('file', {
-   //          storage: diskStorage({
-   //              destination: './files',
-   //              filename: (req, file, cb) => {
-   //                  cb(null, file.originalname);
-   //              },
-   //          }),
-   //      }),
-   //  )
-   //
-   //  uploadedFile(@UploadedFile() file, @Request() req, @Body('file') data) {
-   //
-   //
-   // }
+
 
    @UseGuards(AuthGuard('jwt'))
     @Get('me')
     getProfile(@Request() req) {
         return req.user;
+    }
+
+    @Post('register')
+    async register(@Body() user: RegisterEntity): Promise<any> {
+        return this.authService.register(user);
     }
 
     @Get()
