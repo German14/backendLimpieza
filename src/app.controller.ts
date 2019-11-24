@@ -1,24 +1,20 @@
-import {Body, Controller, Get, HttpCode, Post, Request, UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Put, Request, UseGuards} from '@nestjs/common';
 import {AppService} from './app.service';
 import {AuthGuard} from '@nestjs/passport';
 import {AuthService} from './auth/auth.service';
-import {FileInterceptor} from '@nestjs/platform-express';
-import {diskStorage} from 'multer';
-import {Subject} from 'rxjs/internal/Subject';
-import {RegisterEntity} from "./users/register.entity";
+import {RegisterEntity} from './users/register.entity';
 
 @Controller('api')
 export class AppController {
     constructor(private readonly appService: AppService, private  readonly authService: AuthService) {}
-response = {};
+    response = {};
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    async login(@Request() req){
+    async login(@Request() req) {
         return this.authService.login(req.body);
     }
 
-
-   @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     @Get('me')
     getProfile(@Request() req) {
         return req.user;
@@ -29,6 +25,10 @@ response = {};
         return this.authService.register(user);
     }
 
+    @Get('auth/email/verify/:email')
+    async validation(@Param() param): Promise<any> {
+        return this.authService.validateRegister(param.email);
+    }
     @Get()
     getHello(): string {
         return this.appService.getHello();

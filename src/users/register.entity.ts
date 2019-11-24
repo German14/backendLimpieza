@@ -19,4 +19,7 @@ export class RegisterEntity{
     @Column({default: 'I tied with a lot of type and more  value'})
     password: string;
 
+    @Column({default: false})
+    enable: boolean;
+
 }

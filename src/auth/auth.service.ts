@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import {LoginService} from "../login/login.service";
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import {LoginService} from '../login/login.service';
 import { JwtService } from '@nestjs/jwt';
-import {UsersService} from "../users/users.service";
-import {RegisterEntity} from "../users/register.entity";
-import {User} from "../users/user.entity";
+import {UsersService} from '../users/users.service';
+import {RegisterEntity} from '../users/register.entity';
+import {User} from '../users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -36,13 +36,29 @@ export class AuthService {
             return {
                 name: userData['name'],
                 avatar: userData['avatar'],
-                email:userData['email'] ,
+                email: userData['email'] ,
                 access_token: accessToken,
+                enable: userData['enable'],
             };
 
         });
     }
-    public async register(user: RegisterEntity): Promise<any>{
-        return this.userService.create(user)
+
+    public async validateRegister(user: string): Promise<any> {
+        const users = await this.loginService.findByEmail(user);
+        this.userService.validateRegister(users);
+        const response = {
+            value: users.name,
+            result: 'Actualizado',
+        };
+        return  response;
     }
+    public async register(user: RegisterEntity): Promise<any> {
+        this.loginService.sendEmailVerification(user['data']);
+        return this.userService.create(user);
+    }
+
+
+
+
 }
