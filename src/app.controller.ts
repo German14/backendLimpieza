@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Put, Request, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, Param, Post, Request, UseGuards} from '@nestjs/common';
 import {AppService} from './app.service';
 import {AuthGuard} from '@nestjs/passport';
 import {AuthService} from './auth/auth.service';
@@ -6,7 +6,8 @@ import {RegisterEntity} from './users/register.entity';
 
 @Controller('api')
 export class AppController {
-    constructor(private readonly appService: AppService, private  readonly authService: AuthService) {}
+    constructor(private readonly appService: AppService,
+                private  readonly authService: AuthService) {}
     response = {};
     @UseGuards(AuthGuard('local'))
     @Post('login')
@@ -21,8 +22,11 @@ export class AppController {
     }
 
     @Post('register')
+    @HttpCode(200)
     async register(@Body() user: RegisterEntity): Promise<any> {
-        return this.authService.register(user);
+        return  this.authService.register(user).then((value) => {
+            return value;
+        });
     }
 
     @Get('auth/email/verify/:email')

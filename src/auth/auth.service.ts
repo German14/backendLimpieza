@@ -54,11 +54,16 @@ export class AuthService {
         return  response;
     }
     public async register(user: RegisterEntity): Promise<any> {
-        this.loginService.sendEmailVerification(user['data']);
-        return this.userService.create(user);
+       return this.loginService.sendEmailVerification(user['data']).then((value) => {
+           if (value) {
+                this.userService.create(user);
+           } else {
+               const response = {
+                   value,
+                   result: 'No se ha registrado',
+               };
+               return  response;
+           }
+       });
     }
-
-
-
-
 }
