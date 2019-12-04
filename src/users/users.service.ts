@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import {RegisterEntity} from './register.entity';
+import {Client} from "../clients/client.entity";
 
 @Injectable()
 export class UsersService {
@@ -43,6 +44,26 @@ export class UsersService {
             enable: true,
         };
         await this.registerRepository.update(user.id, usersUpdate);
+    }
+
+    async getUserConfigure(user: RegisterEntity) {
+        return await this.registerRepository.find(
+            {
+                select: ['id', 'name', 'avatar','email', 'password', 'enable'],
+                where: [{ id: user.id }]
+            }
+        );
+    }
+    async updateRegister(register: RegisterEntity) {
+        const registerUpdate = {
+            id: register.id,
+            name: register.name,
+            avatar: register.avatar,
+            email: register.email,
+            password: register.password,
+            enable: true,
+        };
+       await this.registerRepository.update(register.id, registerUpdate);
     }
 
 

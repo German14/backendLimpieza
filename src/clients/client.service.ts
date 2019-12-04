@@ -25,7 +25,6 @@ export class ClientService {
 
     async updateClient(client: Client) {
         this.clientsRepository.update(client.id, client);
-
     }
 
     async deleteClient(client: Client) {
