@@ -1,6 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import DateTimeFormat = Intl.DateTimeFormat;
-import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
+import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
 export class Client {

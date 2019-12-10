@@ -1,4 +1,5 @@
-import {Body, Controller, Delete, Get, HttpCode, Options, Param, Post, Put, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode,
+    Options, Param, Post, Put, UseGuards} from '@nestjs/common';
 import {ClientService} from './client.service';
 import {Client} from './client.entity';
 import {AuthGuard} from '@nestjs/passport';
@@ -23,7 +24,7 @@ export class ClientController {
     create(@Body() client: Client) {
         this.service.createClient(client);
         const response = {
-            value: Client,
+            value: client,
             result: 'Agregado',
         };
         return  response;

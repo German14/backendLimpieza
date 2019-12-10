@@ -35,7 +35,12 @@ export class UsersController {
     @UseGuards(AuthGuard('jwt'))
     @HttpCode(204)
     createtwo(@Body() user: User) {
-        return this.service.createUser(user);
+        this.service.createUser(user);
+        const response = {
+            value: user,
+            result: 'Agregado',
+        };
+        return  response;
     }
 
     @Put(':id')

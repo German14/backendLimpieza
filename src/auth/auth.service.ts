@@ -30,17 +30,19 @@ export class AuthService {
             if (!userData) {
                 return { status: 404 };
             }
-            const payload = { username: userData['name'],lastname: userData['avatar'] , email: userData['email'] };
+            const payload = {
+                username: userData['name'],
+                lastname: userData['avatar'],
+                email: userData['email']
+            };
             const accessToken = this.jwtService.sign({payload});
-
             return {
                 name: userData['name'],
-                avatar: userData['avatar'],
-                email: userData['email'] ,
+                avatar: userData['avantar'],
+                email: userData['email'],
                 access_token: accessToken,
                 enable: userData['enable'],
             };
-
         });
     }
 
@@ -56,11 +58,11 @@ export class AuthService {
 
     public async configureUser(user: string): Promise<any> {
         const users = await this.loginService.findByEmail(user);
-      return  this.userService.getUserConfigure(users)
+        return  this.userService.getUserConfigure(users);
     }
 
     public async updateRegister(register: RegisterEntity): Promise<any> {
-        return  this.userService.updateRegister(register)
+        return  this.userService.updateRegister(register);
     }
 
     public async register(user: RegisterEntity): Promise<any> {
