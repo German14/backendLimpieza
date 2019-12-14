@@ -12,7 +12,8 @@ export class RegisterService {
         await this.registerRepository.save(user['data']);
     }
 
-    async validateRegister(user: RegisterEntity) {
+    async validateRegister(users: any) {
+        const user = await this.registerRepository.findOne({ email: users});
         const usersUpdate: { password: string; enable: boolean; name: string; id: number; avatar: string; email: string } = {
             id: user.id,
             name: user.name,
@@ -24,14 +25,8 @@ export class RegisterService {
         await this.registerRepository.update(user.id, usersUpdate);
     }
 
-    async getUserConfigure(user: RegisterEntity) {
-        return await this.registerRepository.find(
-            {
-                select: ['id', 'name', 'avatar', 'email', 'password', 'enable'],
-                where: [{ id: user.id }],
-            },
-        );
-    }
+
+
     async updateRegister(register: RegisterEntity) {
         const registerUpdate = {
             id: register.id,

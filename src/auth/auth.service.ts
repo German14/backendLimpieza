@@ -46,24 +46,12 @@ export class AuthService {
         });
     }
 
-    public async validateRegister(user: string): Promise<any> {
-        const users = await this.loginService.findByEmail(user);
-        this.userService.validateRegister(users);
-        const response = {
-            value: users.name,
-            result: 'Actualizado',
-        };
-        return  response;
-    }
 
     public async configureUser(user: string): Promise<any> {
         const users = await this.loginService.findByEmail(user);
         return  this.userService.getUserConfigure(users);
     }
 
-    public async updateRegister(register: RegisterEntity): Promise<any> {
-        return  this.userService.updateRegister(register);
-    }
 
     public async register(user: RegisterEntity): Promise<any> {
         return this.loginService.sendEmailVerification(user['data']).then((value) => {
@@ -74,7 +62,6 @@ export class AuthService {
                     result: 'Se ha registrado',
                 };
                 return  validate;
-
             } else {
                 const response = {
                     value,

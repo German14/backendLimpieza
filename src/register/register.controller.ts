@@ -2,10 +2,12 @@ import {Body, Controller, Get, HttpCode, Param, Post, Put, UseGuards} from '@nes
 import {AuthGuard} from '@nestjs/passport';
 import {RegisterEntity} from '../users/register.entity';
 import {AuthService} from '../auth/auth.service';
+import {RegisterService} from "./register.service";
 
 @Controller('registrar')
 export class RegisterController {
-    constructor(private  readonly authService: AuthService) {}
+    constructor(private  readonly authService: AuthService,
+                private readonly  authRegister: RegisterService) {}
 
     @Post('register')
     @HttpCode(200)
@@ -17,7 +19,7 @@ export class RegisterController {
 
     @Get('auth/email/verify/:email')
     async validation(@Param() param): Promise<any> {
-        return this.authService.validateRegister(param.email);
+        return this.authRegister.validateRegister(param.email);
     }
 
     @Get('configure/:email')
@@ -28,7 +30,7 @@ export class RegisterController {
     @Put('configure/:id')
     @UseGuards(AuthGuard('jwt'))
     update(@Body() registerEntity: RegisterEntity) {
-        this.authService.updateRegister(registerEntity);
+        this.authRegister.updateRegister(registerEntity);
         const response = {
             value: registerEntity,
             result: 'Actualizado',

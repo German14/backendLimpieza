@@ -22,27 +22,8 @@ export class UsersService {
         });
     }
 
-    async findById(id: string): Promise<any> {
-        return await this.usersRepository.find({
-            select: ['Name', 'Phone', 'Portal', 'Dias' , 'Observations'],
-            where: [{ id }],
-        });
-    }
-
     async create(user: RegisterEntity) {
         await this.registerRepository.save(user['data']);
-    }
-
-    async validateRegister(user: RegisterEntity) {
-        const usersUpdate: { password: string; enable: boolean; name: string; id: number; avatar: string; email: string } = {
-            id: user.id,
-            name: user.name,
-            avatar: user.avatar,
-            email: user.email,
-            password: user.password,
-            enable: true,
-        };
-        await this.registerRepository.update(user.id, usersUpdate);
     }
 
     async getUserConfigure(user: RegisterEntity) {
